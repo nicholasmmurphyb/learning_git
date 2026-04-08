@@ -1,6 +1,6 @@
 ---
 title: "A few of my favorite things"
-author: "Alex Hurtado Desaulniers"
+author: "Nicholas Murphy"
 output: html_notebook
 ---
 
@@ -10,8 +10,8 @@ Example:
 My Unordered List:
 
  - Books and Reading
- - Yarn and Crocheting 
- - Bikes and MTB
- - Modding controllers and Playing Videogames
+ - Watching YouTube
+ - Dungeons & Dragons
+ - Playing Video Games
 
-🍴
+🎮
