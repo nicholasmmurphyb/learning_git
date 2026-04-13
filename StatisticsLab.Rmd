@@ -1,0 +1,147 @@
+---
+title: "Iris Dataset Statistics Lab"
+author: "Alex Hurtado Desaulniers"
+output: html_notebook
+---
+
+# Libraries
+```{r}
+library(tidyverse)
+```
+
+# Load the iris dataset
+
+
+```{r}
+data(iris)
+```
+
+```{r} 
+# Changing names of each column
+colnames(iris) <- c("SepalLen", "SepalWid", "PetalLen", "PetalWid", "Species")
+```
+
+```{r} 
+# checking  first few rows
+head(iris)
+
+arrange(iris, SepalLen)
+arrange(iris, desc(SepalLen))
+```
+
+## Questions:
+ 1. How many numeric columns are in the dataset?
+ There are 4 numeric columns
+ 
+ 2. How many species are included?
+ There are 3 (setosa, versicolor, virginica)
+ 
+ 3. What is the range of SepalLen? (min and max)
+ It ranges from 4.3 to 7.9.
+
+# Summary Statistics
+Calculate mean, median, variance, SD for numeric columns
+
+```{r}
+sapply(iris[,1:4], mean)
+sapply(iris[,1:4], median)
+sapply(iris[,1:4], var)
+sapply(iris[,1:4], sd)
+```
+
+## Questions:
+1. Which variable has the largest spread?
+PetalLen has the largest variance and largest standard deviation, so it also has the largest spread.
+
+2. Which has the smallest spread?
+SepalWid has the smallest variance and smallest standard deviation, so it also has the smallest spread.
+
+3. How does the mean compare to the median for PetalLen?
+The mean is smaller than the median, and they are different by a significant amount.
+
+4. What does a large variance indicate?
+It means that the data points are widely spread out from the mean, possibly demonstrating some inconsistency with the data.
+
+# Summary by Species
+
+```{r}
+aggregate(SepalLen ~ Species, data=iris, FUN=mean)
+aggregate(PetalWid ~ Species, data=iris, FUN=var)
+```
+
+## Questions:
+1. Which species has the largest SepalLen on average?
+Virginica
+ 
+2. Which species shows the most variability in PetalWid?
+Virginica
+ 
+3. What does this tell you about the characteristics of different species?
+Setosa has the smallest sepals on average compared to the other species and is the most consistent in terms of petal width, but Virginica, which has the largest sepals on average, is the least consistent in terms of petal width. Therefore, it might be concluded that these are related characteristics, and the smaller the sepal, the more consistent the petals will be.
+
+# Visualizations
+
+### Histogram of SepalLen
+
+```{r}
+hist(iris$SepalLen,
+     main="Sepal Length Distribution",
+     xlab="Sepal Length (cm)",
+     col="pink",
+     border="black")
+```
+
+## Questions:
+ 1. What is the shape of the distribution (symmetric, skewed)?
+ While not perfect, I would say this is a normal, symmetric distirbution.
+ 
+ 2. Are there any unusually low or high values?
+ It seems like there is a sharp difference between the frequency of sepals less than 4.5 cm, and sepals between 4,5 and 5 cm, possibly indicating that being smaller than 4.5 cm is unusual. Although there is some dropping off on the other side of the graph as well, the jumps are not quite as severe, and so I wouldn't say there are unusually low values there.
+
+# Boxplot of PetalLen by Species
+
+```{r}
+boxplot(PetalLen ~ Species,
+        data=iris,
+        main="Petal Length by Species",
+        ylab="Petal Length (cm)",
+        col=c("pink","skyblue","purple"))
+```
+
+## Questions:
+ 1. Which species has the longest petals?
+ Virginica
+ 
+ 2. Are there any outliers visible?
+ Yes, there appears to be one each for Setosa and Versicolor, both below the lower whisker.
+ 
+ 3. How do the distributions differ between species?
+ While Setosa is very compact, suggesting that there is not much variation between most of the data points, the other two are a bit more spread out, PetalLen has the largest variance and largest standard deviation, so it also has the largest spread out, Virigina more than Versicolor, suggesting more variation between data points.
+
+# Correlation Matrix
+
+```{r}
+cor_matrix <- cor(iris[,1:4])
+cor_matrix
+```
+
+## Questions:
+ 1. Which two variables are most strongly correlated?
+ PetalLen and PetalWid, with a correlation of 0.963
+ 
+ 2. Are there any weak or negative correlations?
+ Yes, there are 3: SepalLen and SepalWid, SepalWid and PetalLen, and SepalWid and PetalWid. They are all negatively correlated, and the first one in that list is a weak correlation as well, although none of the negative correlations are particularly strong.
+ 
+ 3. How might these correlations help distinguish species?
+ PetalLen and PetalWid are very strongly correlated, so the size of the petals is likely a good indicator for differing between species.
+
+# Interpretation 
+
+Write a short paragraph (3-5 sentences) answering:
+
+- Which variables best distinguish species?
+- How could a scientist use these statistics in real life?
+- Do the histograms, boxplots, and correlations tell a consistent story?
+
+The features that best distinguish species seem to be the PetalLen and PetalWid categories, although in this case it seems possible that Versicolor and Virginica could be a little too close in these categories to each other, so SepalLen might be a good secondary factor. SepalWid, the last variable, seems very unreliable in this regard. These statistics would be good to help illustrate the differences between these various species, and the relationships and correlations indicated in the data might be useful in identifying new species or even realizing what was once thought to be one species into two distinct ones. All the graphs shown seem to indicate that a smaller SepalLen would lead to smaller but more consistent PetalLen and PetalWid by correlation, and there is no graph that contradicts this throughout, at least seemingly.
+
